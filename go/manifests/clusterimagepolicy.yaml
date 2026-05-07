@@ -1,0 +1,13 @@
+apiVersion: policy.sigstore.dev/v1beta1
+kind: ClusterImagePolicy
+metadata:
+  name: verify-hello-melange-apk
+spec:
+  images:
+    - glob: "host.docker.internal:5555/pvnovarese/hello-melange-apk-go*"
+  authorities:
+    - keyless:
+        url: https://fulcio.sigstore.dev
+        identities:
+          - subjectRegExp: "pvn@novarese.net"
+            issuer: "https://github.com/login/oauth"

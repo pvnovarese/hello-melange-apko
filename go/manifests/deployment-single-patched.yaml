@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-melange-apk
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-melange-apk
+  template:
+    metadata:
+      labels:
+        app: hello-melange-apk
+    spec:
+      containers:
+        - name: hello-server
+          image: host.docker.internal:5555/pvnovarese/hello-melange-apko-go:single-patched@sha256:7de8207e1120e4ae3331c287df56b407c08b8f96167eccf888074316b2f83e72
+          ports:
+            - containerPort: 8080
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
