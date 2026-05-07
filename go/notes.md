@@ -1,5 +1,6 @@
 # Container Security Fundamentals
-'''
+
+```
 $ git clone https://github.com/chainguard-dev/hello-melange-apko
 Cloning into 'hello-melange-apko'...
 remote: Enumerating objects: 455, done.
@@ -10,12 +11,13 @@ Receiving objects: 100% (455/455), 130.57 KiB | 2.25 MiB/s, done.
 Resolving deltas: 100% (223/223), done.
 
 $ cd hello-melange-apk/go
-'''
+```
 
 ## 1. Containerization
 
 ### Create a single-stage Dockerfile
-'''
+
+```
 $ cat Dockerfile-single-unpatched
 FROM golang:alpine
 WORKDIR /app
@@ -25,11 +27,12 @@ EXPOSE 8080
 CMD ["./hello-server"]
 
 $ docker build -t host.docker.internal:5555/pvnovarese/hello-melange-apko-go:single-unpatched -f Dockerfile-single-unpatched .
-'''
+```
+
 
 ### Create a multi-stage Dockerfile
 
-'''
+```
 $ cat Dockerfile-multi-unpatched
 FROM golang:alpine AS builder
 WORKDIR /app
@@ -43,7 +46,8 @@ EXPOSE 8080
 CMD ["./hello-server"]
 
 $ docker build -t host.docker.internal:5555/pvnovarese/hello-melange-apko-go:multi-unpatched -f Dockerfile-multi-unpatched .
-'''
+```
+
 
 ### Use any base image of your choice
 
@@ -53,7 +57,7 @@ $ docker build -t host.docker.internal:5555/pvnovarese/hello-melange-apko-go:mul
 ### Document all vulnerabilities found
 ### Compare results between both approaches
 
-'''
+```
 $ grype host.docker.internal:5555/pvnovarese/hello-melange-apko-go:single-unpatched
  ✔ Vulnerability DB                [no update available]
  ✔ Loaded image                          host.docker.internal:5555/pvnovarese/hello-melange-apko-go:single-unpatched
@@ -131,7 +135,7 @@ golang.org/x/crypto         v0.0.0-20210711020723-a769d52b0f97  0.45.0          
 golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.0.0-20210428140749-89ef3d95e781  go-module  GHSA-h86h-8ppg-mxmh  Medium    < 0.1% (6th)   < 0.1
 golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.36.0                             go-module  GHSA-qxp5-gwg8-xv66  Medium    < 0.1% (6th)   < 0.1
 golang.org/x/crypto         v0.0.0-20210711020723-a769d52b0f97  0.45.0                             go-module  GHSA-f6x5-jh6r-wrfv  Medium    < 0.1% (2nd)   < 0.1
-'''
+```
 
 The only difference is the three issues in apk modules, which the multistage build does not have since it uses a scratch image.  Otherwise, the 24 issues in go modules are all fixed. One is particularly worrysome since it is in the Known Exploited Vulnerabilities catalog.
 
@@ -139,7 +143,7 @@ The only difference is the three issues in apk modules, which the multistage bui
 
 ### Patch the Go application (and its dependencies)
 
-'''
+```
 $ go get -u ./...
 go: upgraded go 1.18 => 1.25.0
 go: added github.com/bytedance/gopkg v0.1.4
@@ -172,11 +176,11 @@ go: upgraded golang.org/x/text v0.3.6 => v0.36.0
 go: upgraded google.golang.org/protobuf v1.28.0 => v1.36.11
 
 $ go mod tidy
-'''
+```
 
 ### Update or optimize base images as needed
 
-'''
+```
 $ cat Dockerfile-single-patched
 FROM cgr.dev/chainguard/go:latest-dev
 WORKDIR /app
@@ -197,11 +201,11 @@ FROM cgr.dev/chainguard/go:latest
 COPY --from=builder /app/hello-server /hello-server
 EXPOSE 8080
 ENTRYPOINT ["/hello-server"]
-'''
+```
 
 ### Rescan and document improvements
 
-'''
+```
 $ grype host.docker.internal:5555/pvnovarese/hello-melange-apko-go:single-patched
  ✔ Loaded image                            host.docker.internal:5555/pvnovarese/hello-melange-apko-go:single-patched
  ✔ Parsed image                              sha256:8c5b82799cf13d7199fe67c37975e68dbbc88c6dbc88be802aedd93fddce6ef6
@@ -227,7 +231,7 @@ $ grype host.docker.internal:5555/pvnovarese/hello-melange-apko-go:multi-patched
    ├── by severity: 0 critical, 0 high, 0 medium, 0 low, 0 negligible
    └── by status:   0 fixed, 0 not-fixed, 0 ignored
 No vulnerabilities found
-'''
+```
 
 No vulnerabilities found.  Updating the go dependencies fixed the 24 issues in the go modules.  In the single-stage image, switching to the chainguard go:latest-dev image removed the apk issues.  In the multi-stage image, using the go:latest image as the final stage sidesteps those issues.
 
@@ -235,7 +239,7 @@ No vulnerabilities found.  Updating the go dependencies fixed the 24 issues in t
 
 ### Generate SBOM for each container
 
-'''
+```
 $ syft -o spdx-json=single-unpatched-spdx.json -o cyclonedx-json=single-unpatched-cdx.json host.docker.internal:5555/pvnovarese/hello-melange-apko-go:single-unpatched
  ✔ Loaded image                          host.docker.internal:5555/pvnovarese/hello-melange-apko-go:single-unpatched
  ✔ Parsed image                              sha256:6b56f658ddb4ceea03e5ef9a4d7161ae69c0da32e9b59315400706f485cdf41c
@@ -267,12 +271,12 @@ $ syft -o spdx-json=multi-patched-spdx.json -o cyclonedx-json=multi-patched-cdx.
    ├── ✔ Packages                        [106 packages]
    ├── ✔ Executables                     [250 executables]
    ├── ✔ File metadata                   [10,093 locations]
-'''
+```
 
 ### Sign all container images
 ### Push signed images to your local registry
 
-'''
+```
 $ docker push host.docker.internal:5555/pvnovarese/hello-melange-apko-go:single-unpatched
 The push refers to repository [host.docker.internal:5555/pvnovarese/hello-melange-apko-go]
 4f4fb700ef54: Mounted from pvnovarese/hello-melange-apk
@@ -384,13 +388,13 @@ The following checks were performed on each of these signatures:
   - The code-signing certificate was verified using trusted certificate authority certificates
 
 [{"critical":{"identity":{"docker-reference":"localhost:5555/pvnovarese/hello-melange-apko-go@sha256:7aa6946d6f01bf4eca843264e23a61f0bbb1baa97a2244877c325b61c073fdf3"},"image":{"docker-manifest-digest":"sha256:7aa6946d6f01bf4eca843264e23a61f0bbb1baa97a2244877c325b61c073fdf3"},"type":"https://sigstore.dev/cosign/sign/v1"},"optional":{}}]
-'''
+```
 
 ## 5. Deployment
 
 ### Deploy as a standalone container
 
-'''
+```
 $ docker run -p 8080:8080 --rm host.docker.internal:5555/pvnovarese/hello-melange-apko-go:single-unpatched
 [GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
 
@@ -458,11 +462,12 @@ Please check https://github.com/gin-gonic/gin/blob/master/docs/doc.md#dont-trust
 
 $ curl localhost:8080
 Hello World!
-'''
+```
 
 ### Deploy to your Kubernetes cluster
 
-'''
+set up to verify image signatures:
+```
 $ helm repo add sigstore https://sigstore.github.io/helm-charts
 "sigstore" has been added to your repositories
 
@@ -510,7 +515,12 @@ spec:
 
 $ kubectl apply -f clusterimagepolicy.yaml
 clusterimagepolicy.policy.sigstore.dev/verify-hello-melange-apk created
+```
 
+now for deployments:
+
+First, the single-stage unpatched image:
+```
 $ cat deployment-single-unpatched.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -558,7 +568,11 @@ Hello World!
 
 $ k delete deployment hello-melange-apk
 deployment.apps "hello-melange-apk" deleted from default namespace
+```
 
+next, the multi-stage unpatched image:
+
+```
 $ cat deployment-multi-unpatched.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -606,7 +620,11 @@ Hello World!
 
 $ k delete deployment hello-melange-apk
 deployment.apps "hello-melange-apk" deleted from default namespace
+```
 
+next, single-stage patched image:
+
+```
 $ cat deployment-single-patched.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -654,7 +672,11 @@ Hello World!
 
 $ k delete deployment hello-melange-apk
 deployment.apps "hello-melange-apk" deleted from default namespace
+```
 
+finally, the multi-stage patched image:
+
+```
 $ cat deployment-multi-patched.yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -698,15 +720,30 @@ Handling connection for 8080
 
 $ curl localhost:8080
 Hello World!
-'''
+```
 
 ### Validate both deployments are functional
+
+see above
 
 ## Deliverables
 
 ### All Dockerfiles
+
+in this directory
+
 ### Vulnerability scan reports (before/after)
+
+in the `vuln_reports` directory
+
 ### SBOM files
+
+in the `sbom` directory
+
 ### Kubernetes manifests
+
+in the `manifests` directory
+
 ### Documentation of findings and methodology
 
+in this file.
