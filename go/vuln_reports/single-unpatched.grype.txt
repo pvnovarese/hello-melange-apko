@@ -1,0 +1,28 @@
+NAME                        INSTALLED                           FIXED IN                           TYPE       VULNERABILITY        SEVERITY  EPSS           RISK          
+golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.17.0                             go-module  GHSA-qppj-fm5r-hxr3  Medium    94.5% (99th)   58.3   (kev)  
+golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.23.0                             go-module  GHSA-4v7x-pqxf-cx7m  Medium    69.9% (98th)   36.0          
+golang.org/x/crypto         v0.0.0-20210711020723-a769d52b0f97  0.0.0-20231218163308-9d2ee975ef9f  go-module  GHSA-45x7-px36-x8w8  Medium    53.6% (98th)   29.2          
+golang.org/x/crypto         v0.0.0-20210711020723-a769d52b0f97  0.31.0                             go-module  GHSA-v778-237x-gjrc  Critical  30.3% (96th)   27.4          
+golang.org/x/crypto         v0.0.0-20210711020723-a769d52b0f97  0.35.0                             go-module  GHSA-hcg3-q754-cr77  High      0.6% (69th)    0.4           
+google.golang.org/protobuf  v1.28.0                             1.33.0                             go-module  GHSA-8r3f-844c-mc37  Medium    0.4% (60th)    0.2           
+golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.7.0                              go-module  GHSA-vvpx-j8f3-3w6h  High      0.3% (49th)    0.2           
+github.com/gin-gonic/gin    v1.8.1                              1.9.1                              go-module  GHSA-2c4m-59x9-fr2g  Medium    0.4% (61st)    0.2           
+golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.4.0                              go-module  GHSA-xrjj-mj9h-534m  Medium    0.3% (55th)    0.2           
+github.com/gin-gonic/gin    v1.8.1                              1.9.0                              go-module  GHSA-3vp4-m3rf-835h  Medium    0.2% (46th)    0.1           
+golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.17.0                             go-module  GHSA-4374-p667-p6c8  High      0.2% (36th)    0.1           
+golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.0.0-20210520170846-37e1c6afe023  go-module  GHSA-83g2-8m93-v3w7  High      0.1% (33rd)    0.1           
+golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.0.0-20220906165146-f3363e06e74c  go-module  GHSA-69cg-p879-7622  High      0.1% (32nd)    < 0.1         
+golang.org/x/sys            v0.0.0-20210806184541-e5e7981a1069  0.0.0-20220412211240-33da011f77ad  go-module  GHSA-p782-xgp4-8hr8  Medium    0.2% (39th)    < 0.1         
+golang.org/x/crypto         v0.0.0-20210711020723-a769d52b0f97  0.0.0-20220314234659-1baeb1ce4c0b  go-module  GHSA-8c26-wmh5-6g9v  High      < 0.1% (25th)  < 0.1         
+golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.38.0                             go-module  GHSA-vvgc-356p-c3xw  Medium    0.1% (30th)    < 0.1         
+golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.13.0                             go-module  GHSA-2wrh-6pvc-2jm9  Medium    < 0.1% (26th)  < 0.1         
+golang.org/x/text           v0.3.6                              0.3.8                              go-module  GHSA-69ch-w2m2-3vjp  High      < 0.1% (16th)  < 0.1         
+golang.org/x/text           v0.3.6                              0.3.7                              go-module  GHSA-ppp9-7jff-5vj2  High      < 0.1% (16th)  < 0.1         
+busybox                     1.37.0-r30                                                             apk        CVE-2025-60876       Medium    < 0.1% (15th)  < 0.1         
+busybox-binsh               1.37.0-r30                                                             apk        CVE-2025-60876       Medium    < 0.1% (15th)  < 0.1         
+ssl_client                  1.37.0-r30                                                             apk        CVE-2025-60876       Medium    < 0.1% (15th)  < 0.1         
+golang.org/x/crypto         v0.0.0-20210711020723-a769d52b0f97  0.0.0-20211202192323-5770296d904e  go-module  GHSA-gwc9-m7rh-j2ww  High      < 0.1% (9th)   < 0.1         
+golang.org/x/crypto         v0.0.0-20210711020723-a769d52b0f97  0.45.0                             go-module  GHSA-j5w8-q4qc-rx2x  Medium    < 0.1% (13th)  < 0.1         
+golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.0.0-20210428140749-89ef3d95e781  go-module  GHSA-h86h-8ppg-mxmh  Medium    < 0.1% (6th)   < 0.1         
+golang.org/x/net            v0.0.0-20210226172049-e18ecbb05110  0.36.0                             go-module  GHSA-qxp5-gwg8-xv66  Medium    < 0.1% (6th)   < 0.1         
+golang.org/x/crypto         v0.0.0-20210711020723-a769d52b0f97  0.45.0                             go-module  GHSA-f6x5-jh6r-wrfv  Medium    < 0.1% (2nd)   < 0.1
